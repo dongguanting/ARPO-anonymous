@@ -70,7 +70,7 @@ pip install -r requirements.txt
 ### 2. Fine-Tuning Model
 
 
-1. Download your SFT dataset from [🤗ARPO-SFT-54K](https://huggingface.co/datasets/dongguanting/ARPO-SFT-54K) and place it in `LLaMA-Factory-main/data/final_sft_edition9.json`. Define the dataset in `dataset_info.json`.
+1. Download your SFT dataset and place it in `LLaMA-Factory-main/data/final_sft_edition9.json`. Define the dataset in `dataset_info.json`.
 
 2. Configure Training
 
@@ -403,7 +403,7 @@ bash ./ARPO/merge_ckpt/convert_checkpoint_from_verl_to_hf_qwen3.sh
 
 ## ✅ ARPO Evaluation
 
-If you have already trained a model, you can refer to the following process for TIR capability evaluation. Of course, you can also download our checkpoint from **[🤗ARPO-Huggingface-Collection](https://huggingface.co/collections/dongguanting/arpo-688229ff8a6143fe5b4ad8ae)** for directly testing.
+If you have already trained a model, you can refer to the following process for TIR capability evaluation.
 This guide walks you through setting up two separate environments:
 - One for **vLLM inference service** (`vllm_env`)
 - One for **evaluation pipeline** (`evaluation`)
@@ -535,82 +535,4 @@ Then, run the evaluation script to calculate metrics:
 ```bash
 bash evaluation/evaluate_passk.sh
 ```
----
 
-
-## 📄 Citation
-
-If you find this work helpful, please cite our paper:
-```bibtex
-@article{dong2025arpo,
-  author       = {Guanting Dong and
-                  Hangyu Mao and
-                  Kai Ma and
-                  Licheng Bao and
-                  Yifei Chen and
-                  Zhongyuan Wang and
-                  Zhongxia Chen and
-                  Jiazhen Du and
-                  Huiyang Wang and
-                  Fuzheng Zhang and
-                  Guorui Zhou and
-                  Yutao Zhu and
-                  Ji{-}Rong Wen and
-                  Zhicheng Dou},
-  title        = {Agentic Reinforced Policy Optimization},
-  journal      = {CoRR},
-  volume       = {abs/2507.19849},
-  year         = {2025},
-  url          = {https://doi.org/10.48550/arXiv.2507.19849},
-  doi          = {10.48550/ARXIV.2507.19849},
-  eprinttype    = {arXiv},
-  eprint       = {2507.19849},
-  timestamp    = {Fri, 22 Aug 2025 07:48:19 +0200},
-  biburl       = {https://dblp.org/rec/journals/corr/abs-2507-19849.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
-
-@article{dong2025tool,
-  author       = {Guanting Dong and
-                  Yifei Chen and
-                  Xiaoxi Li and
-                  Jiajie Jin and
-                  Hongjin Qian and
-                  Yutao Zhu and
-                  Hangyu Mao and
-                  Guorui Zhou and
-                  Zhicheng Dou and
-                  Ji{-}Rong Wen},
-  title        = {Tool-Star: Empowering LLM-Brained Multi-Tool Reasoner via Reinforcement
-                  Learning},
-  journal      = {CoRR},
-  volume       = {abs/2505.16410},
-  year         = {2025},
-  url          = {https://doi.org/10.48550/arXiv.2505.16410},
-  doi          = {10.48550/ARXIV.2505.16410},
-  eprinttype    = {arXiv},
-  eprint       = {2505.16410},
-  timestamp    = {Thu, 26 Jun 2025 07:49:34 +0200},
-  biburl       = {https://dblp.org/rec/journals/corr/abs-2505-16410.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
-```
-
-
-## 🤝 Acknowledge
-
-This training implementation builds upon [Tool-Star](https://github.com/dongguanting/Tool-Star), [Llama Factory](https://github.com/hiyouga/LLaMA-Factory), [verl](https://github.com/volcengine/verl) and [ReCall](https://github.com/Agent-RL/ReCall). For evaluation, we rely on [WebThinker](https://github.com/RUC-NLPIR/WebThinker), [HIRA](https://github.com/RUC-NLPIR/HiRA), [WebSailor](https://github.com/Alibaba-NLP/WebAgent), [Search-o1](https://github.com/sunnynexus/Search-o1), and [FlashRAG](https://github.com/RUC-NLPIR/FlashRAG). The Python interpreter design references [ToRA](https://github.com/microsoft/ToRA) and [ToRL](https://github.com/GAIR-NLP/ToRL), while our models are trained using [Qwen2.5](https://qwenlm.github.io/blog/qwen2.5/). We express our sincere gratitude to these projects for their invaluable contributions to the open-source community. 
-
-
-## 📄 License
-
-This project is released under the [MIT License](LICENSE).
-
-## 📞 Contact
-
-For any questions or feedback, please reach out to us at [dongguanting@ruc.edu.cn](dongguanting@ruc.edu.cn).
-
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=dongguanting/ARPO&type=Date)](https://www.star-history.com/#dongguanting/ARPO&Date)
