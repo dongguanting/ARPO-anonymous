@@ -5,45 +5,6 @@
 <h1 align="center" style="margin-top: -50px;">✨ Agentic Reinforced Policy Optimization</h1>
 
 
-<div align="center"> 
-
-[![Paper](https://img.shields.io/badge/Paper-arXiv-b5212f.svg?logo=arxiv)](https://arxiv.org/abs/2507.19849)
-[![Paper](https://img.shields.io/badge/Paper-Hugging%20Face-yellow?logo=huggingface)](https://huggingface.co/papers/2507.19849)
-[![Model](https://img.shields.io/badge/Model-Hugging%20Face-blue?logo=huggingface)](https://huggingface.co/collections/dongguanting/arpo-688229ff8a6143fe5b4ad8ae)
-[![Dataset](https://img.shields.io/badge/Dataset-Hugging%20Face-blue?logo=huggingface)](https://huggingface.co/collections/dongguanting/arpo-688229ff8a6143fe5b4ad8ae)
-[![License](https://img.shields.io/badge/LICENSE-MIT-green.svg)](https://opensource.org/licenses/MIT) 
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/release/python-390/) 
-[![X (formerly Twitter) URL](https://img.shields.io/twitter/url?url=https%3A%2F%2Fx.com%2FKevin_GuoweiXu%2Fstatus%2F1858338565463421244)](https://x.com/_akhaliq/status/1950172418250547478)
-</div>
-
-<!--
-<p align="center">
-🤗 <a href="https://huggingface.co/dongguanting/Qwen2.5-3B-ARPO" target="_blank">Qwen2.5-3B-ARPO</a> ｜
-🤗 <a href="https://huggingface.co/dongguanting/Qwen2.5-7B-ARPO" target="_blank">Qwen2.5-7B-ARPO</a> ｜
-🤗 <a href="https://huggingface.co/dongguanting/Llama3.1-8B-ARPO" target="_blank">Llama3.1-8B-ARPO</a> ｜
-🤗 <a href="https://huggingface.co/dongguanting/Qwen3-8B-ARPO-DeepSearch" target="_blank">Qwen3-8B-ARPO-DeepSearch</a> ｜ 
-🤗 <a href="https://huggingface.co/dongguanting/Qwen3-14B-ARPO-DeepSearch" target="_blank">Qwen3-14B-ARPO-DeepSearch</a> ｜
-</p>
-<p align="center">
-🤗 <a href="https://huggingface.co/datasets/dongguanting/ARPO-SFT-54K" target="_blank">ARPO-SFT-54K</a> ｜
-🤗 <a href="https://huggingface.co/datasets/dongguanting/ARPO-RL-Reasoning-10K" target="_blank">ARPO-RL-Reasoning-10K</a>
-🤗 <a href="https://huggingface.co/datasets/dongguanting/ARPO-RL-DeepSearch-1K" target="_blank">ARPO-RL-DeepSearch-1K</a>
-</p>
--->
-
-
-
-<h5 align="center"> If you like our project, please give us a star ⭐ on GitHub for the latest update.</h5>
-
-## 📣 Latest News
-
-
-- **[Aug 11, 2025]**: The brief introduction of ARPO can be found on a series of platforms like **[X](https://x.com/kakakbibibi/status/1950211490943832393), [WeChat](https://mp.weixin.qq.com/s/mFNRs-bHCAAe3x4QZHF8aA), [Zhihu](https://zhuanlan.zhihu.com/p/1938022709545141501), [YouTube](https://www.youtube.com/watch?v=FOK2tRtq7TE) and [Xiaohongshu](https://www.xiaohongshu.com/explore/68885b6b000000002501bb5e?xsec_token=ABhbOv-GAqL62zxhidTntouED470HN18Wk3e980-_uwtI=&xsec_source=pc_user)**.
-- **[July 29, 2025]**: 🔥 We are honored to be featured as 🤗 HuggingFace **[Daily Paper #1](https://huggingface.co/papers/2507.19849)** and  **[Weekly Paper #1](https://huggingface.co/papers/week/2025-W31)**.
-- **[July 29, 2025]**: 📄 Our paper is now available on **[arXiv](https://arxiv.org/abs/2507.19849)** and **[Hugging Face](https://huggingface.co/papers/2507.19849)** daily paper.
-- **[July 25, 2025]**: 🔥 We released all our **ARPO model checkpoints (3B~14B)** and **datasets(SFT, RL, Evaluation)**. Checkout **[🤗ARPO Collection](https://huggingface.co/collections/dongguanting/arpo-688229ff8a6143fe5b4ad8ae)** here. We will keep update it!
-- **[July 25, 2025]**: We have implemented extensive tool-call acceleration and memory optimization during RL training in ARPO.（**Training Qwen3-14B in 1 node with a batch size of 128 takes only 10 minutes per step!!! we also maintain a dynamic cache mechanism to save your tool call results in real-time!!**）
-- **[July 25, 2025]**: 🚀 Full codebase released. ARPO supports multi-tool agentic RL training for the Qwen2.5, 3 and Llama3 models. 
 
 
 ## Table of Contents
