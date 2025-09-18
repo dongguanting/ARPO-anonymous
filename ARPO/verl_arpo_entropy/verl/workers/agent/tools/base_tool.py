@@ -2,21 +2,21 @@ from abc import ABC, abstractmethod
 
 
 class BaseTool(ABC):
-    """抽象基类，为所有工具定义通用接口"""
+    """Abstract base class that defines common interface for all tools"""
     
     @property
     @abstractmethod
     def name(self) -> str:
-        """工具名称"""
+        """Tool name"""
         pass
     
     @property
     @abstractmethod
     def trigger_tag(self) -> str:
-        """触发该工具的标签"""
+        """Tag used to trigger this tool"""
         pass
     
     @abstractmethod
     def execute(self, content: str, **kwargs) -> str:
-        """执行工具操作"""
+        """Execute tool operation"""
         pass

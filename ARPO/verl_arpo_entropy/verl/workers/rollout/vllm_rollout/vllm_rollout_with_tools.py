@@ -79,21 +79,21 @@ class vLLMRolloutWithTools(vLLMRollout):
         super().__init__(model_path, config, tokenizer, model_hf_config, **kwargs)
         self.tokenizer = tokenizer
 
-        # 从配置中获取beam search相关参数
+        # Get beam search related parameters from config
         self.initial_rollouts = self.config.get("initial_rollouts", self.config['n'])
         self.beam_size = self.config.get("beam_size", 1)
         self.branch_probability = self.config.get("branch_probability", 0.5)
         self.entropy_weight = self.config.get("entropy_weight", 0.5)
         
-        # 从配置中获取工具设置
+        # Get tool settings from config
         tools_config = self.config.get("tools", OmegaConf.create({}))
 
-        # 获取工具通用配置
+        # Get general tool configuration
         self.tool_call_limit = tools_config.get("call_limit", 5)
         self.max_tool_workers = tools_config.get("max_workers", 64)
         self.tool_timeout = tools_config.get("timeout", 120)
 
-        # 其他可能的工具通用配置
+        # Other possible general tool configurations
         self.tool_retry_count = tools_config.get("retry_count", 3)
         self.tool_verbose_logging = tools_config.get("verbose_logging", False)
 
@@ -112,7 +112,7 @@ class vLLMRolloutWithTools(vLLMRollout):
 
         self.stop_sequences = [f"</{tag}>" for tag in self.tools.keys()]
         self.logprobs = 10 # entropy
-        self.initial_entropy_dict = {}  # record initial entropy of active indice
+        self.initial_entropy_dict = {}  # record initial entropy of active indices
 
         if not self.tools:
             logger.warning(
@@ -188,7 +188,7 @@ class vLLMRolloutWithTools(vLLMRollout):
         eos_token_id = self.tokenizer.eos_token_id
         batch_size = input_ids.size(0)
         
-        # 初始化工具调用统计信息
+        # Initialize tool call statistics
         tool_metrics = {
             "tools/total_calls": 0,
             "tools/successful_calls": 0,
@@ -201,7 +201,7 @@ class vLLMRolloutWithTools(vLLMRollout):
             "tools/call_limit_reached_count": 0,
         }
         
-        # 每个工具的统计信息
+        # Statistics for each tool
         calls_per_tool = Counter()
         success_per_tool = Counter()
         total_time_per_tool = Counter()
@@ -209,7 +209,7 @@ class vLLMRolloutWithTools(vLLMRollout):
         do_sample = prompts.meta_info.get('do_sample', True)
         is_validate = prompts.meta_info.get('validate', False)
         
-        # 更新采样参数设置
+        # Update sampling parameter settings
         beam_size = self.beam_size
         if not do_sample:
             kwargs.update({
@@ -222,7 +222,7 @@ class vLLMRolloutWithTools(vLLMRollout):
                 'top_k': self.config.val_kwargs.top_k,
                 'top_p': self.config.val_kwargs.top_p,
                 'temperature': self.config.val_kwargs.temperature,
-                'n': 1  # 验证模式下使用单个样本
+                'n': 1  # Use single sample in validation mode
             })
             beam_size = 1
         
@@ -235,9 +235,9 @@ class vLLMRolloutWithTools(vLLMRollout):
             prompt_token_ids_list = [_pre_process_inputs(self.pad_token_id, prompt) for prompt in input_ids]
 
             # State for each sample in the batch
-            # 为每个样本创建初始rollout，数量由initial_rollouts控制
+            # Create initial rollouts for each sample, controlled by initial_rollouts
             initial_rollouts = self.initial_rollouts
-            initial_rollouts = min(initial_rollouts, num_samples)  # 但不超过num_samples
+            initial_rollouts = min(initial_rollouts, num_samples)  # but not exceeding num_samples
 
             curr_inputs = []
             init_inputs = []
@@ -245,7 +245,7 @@ class vLLMRolloutWithTools(vLLMRollout):
             call_counters = []
             active_indices = []
             
-            # 创建初始样本
+            # Create initial samples
             for i, ids in enumerate(prompt_token_ids_list):
                 for _ in range(initial_rollouts):
                     curr_inputs.append(ids.copy())
@@ -255,8 +255,8 @@ class vLLMRolloutWithTools(vLLMRollout):
                     active_indices.append(len(curr_inputs) - 1)
             
             # Track rollouts per original sample
-            rollouts_per_sample = [initial_rollouts] * batch_size  # 每个样本初始有initial_rollouts个rollout
-            # 初始时每个样本有多个索引
+            rollouts_per_sample = [initial_rollouts] * batch_size  # Each sample initially has initial_rollouts rollouts
+            # Initially each sample has multiple indices
             sample_to_indices = {i: [i * initial_rollouts + j for j in range(initial_rollouts)] for i in range(batch_size)}
 
             max_len = self.config.response_length
@@ -344,7 +344,7 @@ class vLLMRolloutWithTools(vLLMRollout):
                             if content:
                                 tool_requests[tag].append({"index": out_idx, "content": content})
                                 next_active_indices.append(out_idx)
-                                # 更新工具调用计数统计
+                                # Update tool call count statistics
                                 tool_metrics["tools/total_calls"] += 1
                                 calls_per_tool[tag] += 1
                         else:
@@ -383,13 +383,13 @@ class vLLMRolloutWithTools(vLLMRollout):
                         tag = fut_info["tag"]
                         try:
                             result = future.result(timeout=self.tool_timeout)
-                            # 解析工具执行结果
+                            # Parse tool execution results
                             success = result["success"]
                             retry_count = result["retry_count"]
                             execution_time = result["execution_time"]
                             result_text = result["result"]
                             
-                            # 更新统计信息
+                            # Update statistics
                             if success:
                                 tool_metrics["tools/successful_calls"] += 1
                                 success_per_tool[tag] += 1
@@ -404,7 +404,7 @@ class vLLMRolloutWithTools(vLLMRollout):
                             tool_metrics["tools/total_retries"] += retry_count
                             tool_metrics["tools/max_retries"] = max(tool_metrics["tools/max_retries"], retry_count)
                             
-                            # 更新每个工具的时间统计
+                            # Update time statistics for each tool
                             total_time_per_tool[tag] += execution_time
                             
                             if not result_text:
@@ -437,7 +437,7 @@ class vLLMRolloutWithTools(vLLMRollout):
                 new_init_inputs = []
                 new_result_masks = []
                 new_call_counters = []
-                new_sample_origins = []  # 记录每个新分支对应的原始样本
+                new_sample_origins = []  # Record the original sample corresponding to each new branch
                 
                 # Map from original sample index to its active rollouts
                 active_by_sample = {}
@@ -490,7 +490,7 @@ class vLLMRolloutWithTools(vLLMRollout):
                 # Add non-active samples that still need more rollouts
                 for orig_sample in range(batch_size):
                     if orig_sample not in active_by_sample and rollouts_per_sample[orig_sample] < num_samples:
-                        # 对于不活跃样本，每次只新增一个branch
+                        # For inactive samples, only add one branch at a time
                         branches_to_add = min(1, num_samples - rollouts_per_sample[orig_sample])
                         if branches_to_add <= 0:
                             continue
@@ -504,7 +504,7 @@ class vLLMRolloutWithTools(vLLMRollout):
                             new_init_inputs.append(init_inputs[source_idx].copy())
                             new_result_masks.append([])
                             new_call_counters.append(0)
-                            new_sample_origins.append(orig_sample)  # 记录原始样本
+                            new_sample_origins.append(orig_sample)  # Record original sample
                             rollouts_per_sample[orig_sample] += 1
                 
                 # Add new branches to existing lists
@@ -518,14 +518,14 @@ class vLLMRolloutWithTools(vLLMRollout):
                     # Add new indices to active list
                     final_active_indices.extend(range(start_idx, start_idx + len(new_inputs)))
                     
-                    # 使用正确的原始样本信息更新映射
+                    # Update mapping with correct original sample information
                     for i, new_idx in enumerate(range(start_idx, start_idx + len(new_inputs))):
                         orig_sample = new_sample_origins[i]
                         sample_to_indices.setdefault(orig_sample, []).append(new_idx)
                 
                 active_indices = final_active_indices
 
-            # 确保所有序列不超过max_len
+            # Ensure all sequences do not exceed max_len
             for idx in range(len(curr_inputs)):
                 response_len = len(curr_inputs[idx]) - len(init_inputs[idx])
                 if response_len > max_len:
@@ -604,11 +604,11 @@ class vLLMRolloutWithTools(vLLMRollout):
 
             loss_mask = loss_mask * response_attention_mask
 
-            # 计算平均执行时间
+            # Calculate average execution time
             if tool_metrics["tools/total_calls"] > 0:
                 tool_metrics["tools/avg_execution_time"] = tool_metrics["tools/total_execution_time"] / tool_metrics["tools/total_calls"]
                 
-            # 计算每个工具的平均执行时间和成功率
+            # Calculate average execution time and success rate for each tool
             tool_specific_metrics = {}
             for tag in self.tools.keys():
                 calls = calls_per_tool[tag]
@@ -633,10 +633,10 @@ class vLLMRolloutWithTools(vLLMRollout):
         if vllm_version in ('0.5.4', '0.6.3') and self.config.free_cache_engine:
             self.inference_engine.free_cache_engine()
             
-        # 合并所有metrics
+        # Merge all metrics
         all_metrics = {**tool_metrics, **tool_specific_metrics}
         
-        # 将metrics添加到meta_info中
+        # Add metrics to meta_info
         meta_info = deepcopy(prompts.meta_info) if prompts.meta_info else {}
         meta_info["metrics"] = all_metrics
 

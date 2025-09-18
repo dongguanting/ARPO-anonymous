@@ -486,7 +486,7 @@ if __name__ == "__main__":
     # Test configuration
     cache_file = "<your_search_cache_dir>"
     api_key = "<your_api_key>"
-    zone = "<zone>"
+    zone = "<your_zone>"
     
     # Create search tool instance
     search_tool = BingSearchTool(
@@ -496,7 +496,7 @@ if __name__ == "__main__":
     )
 
     # Test query
-    query = "甄嬛传导演"
+    query = "example search query"
     print(f"Searching for: {query}")
 
     # Execute search
