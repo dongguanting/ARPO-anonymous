@@ -55,8 +55,7 @@ This stage is meant to help you reproduce our experimental results. If your want
 In this step, we will describe how to perform a cold start for the SFT stage using the LLaMA Factory repository. First, set up the environment as follows:
 
 ```bash
-# Clone the ARPO repository (which includes LLaMA-Factory)
-git clone https://github.com/dongguanting/ARPO
+# First download the ARPO repository (which includes LLaMA-Factory), then
 cd ARPO/LLaMA-Factory
 
 # Create a new conda environment
